@@ -12,8 +12,44 @@ Gaussian mixture models are an upgraded version of k-means clustering
 <h1>
 k-means clustering
 </h1>
+The way that k-means clustering is usually presented is the following.
 
 
+This algorithm always decreases the loss function. 
+
+warning: I don't understand why people call this a ``local minima''. The loss function has, as its domain, the set of all possible partitions of the data set. This domain is a discrete set; I don't know what the word ``local minimum'' means in this context (what does ``local'' mean?). I \emph{think} what is going on is that machine learning people conflate the term ``local minimum'' with ``something that a loss-function reducing algorithm converges to'', because for gradient descent, these two concepts are the same. If someone else can explain why people use the phrase ``local minimum'' to describe ``partition of the data which is a fixed point of the k-means clustering algorithm'', then please let me know. 
+
+
+stable configuration.
+
+
+
+
+<h2>
+Loss functions
+</h2>
+
+
+
+<h2>
+Initialization
+</h2>
+\begin{description}
+\item[Randomly pick means:] This is exactly what it sounds like -- The only reason to. It makes your code simple to understand. 
+\begin{enumerate}
+\item hi
+\item b
+\end{enumerate}
+\item[Randomly pick means among points from the data set:]
+\item[Randomly pick a partition, then set initial points to :]
+\item[k-means++:]
+
+
+
+<h2>
+Gaussian mixture model
+</h2>
+One of the 
 
 The most naive algorithm would be to iterate through all the different possible 
 
