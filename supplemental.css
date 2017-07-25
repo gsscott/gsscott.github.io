@@ -1,0 +1,64 @@
+body {
+	background:#f7f7f7;
+}
+
+.heading {
+	background:#E6E6E6;
+}
+
+.h1title{
+	margin-top:10px;
+	color:#1acbae;
+}
+
+.h4title {
+	color:gray;
+}
+
+hr {
+	margin:0px;
+}
+
+
+
+.navbar{
+	margin-bottom:0px;
+	background:#f7f7f7;
+	border:0px;
+
+}
+
+.navbar-nav.navbar-right:last-child {
+	margin-right:0;
+}
+
+
+#differentfont {
+
+	font-family:'Overpass', sans-serif;
+}
+
+
+.subsection {
+	width:65%;
+	border-bottom:1px solid black;
+	color:#17b59a;
+	text-transform:underline;
+	text-transform:uppercase;
+}
+
+.bottomhr {
+	margin-bottom:20px;
+}
+
+
+.divider-vertical {
+height: 50px;
+margin: 0 9px;
+border-left: 1px solid black;
+border-right: 1px solid black;
+}
+
+.navbarbutton {
+	color:#1acbae;
+}
