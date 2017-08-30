@@ -51,30 +51,33 @@ All the data from this page was collected from <a href="http://www.torontowaterf
 
 <h3 class="subsection"> Finishing Time</h3>
 
-The plot below shows the finishing times of participants of the Toronto Waterfront Marathon from 2002 to 2016. You can filter the results by age, year, and gender.
+The histogram below shows the finishing times of participants of the Toronto Waterfront Marathon from 2002 to 2016. You can filter the results by age, year, and gender.
 <br>
 <br>
 <div class="svgholder">
 <svg id="marathon_plot"></svg>
 </div>
 
-It's neat to see the big bumps below the common goal times of 3:00, 3:30, and 4:00, especially in 2014. I ran the 2015 and 2016 marathons and felt that 2016 was the harder year. I feel vindicated by the data, which shows that 2016 was the slowest race (by median finish time) of the last fifteen years. Let's hope 2017 goes better!
+Notice the big bumps below 3:00, 3:30, and 4:00 (especially in 2014) -- I suppose these are due to runners meeting their goal times. I ran the 2015 and 2016 marathons and felt that 2016 was the harder year. I feel vindicated by the data, which shows that 2016 was the slowest race (by median finish time) of the last fifteen years. Let's hope 2017 goes better!
 
 
 <h3 class="subsection"> Splits</h3>
 
-The plot below compares the pace of the runners during different segments of the race to their average pace over the entire race. For example, the violin plot labelled '0-10km' measures (pace for first 10k (sec/km)) minus (entire race pace (sec/km)). The big bump around -8 means that a lot of people ran their first 10k at a pace roughly -8 seconds/km faster than their overall race pace. You can filter these results by age, gender, and finishing time. You can also change which segment you're comparing against by clicking on the title of the plot.
+The violin plots below compare the runners' pace during a segment of the race to their average pace over the entire race. For example, the plot labelled '0-10km' measures: <br><br>
+<center>(average pace over the first 10k (sec/km)) minus (average pace over the entire race (sec/km))</center><br>
+<p>
+The big bump around -8 means that many people ran their first 10k roughly 8 seconds/km faster than their overall race pace. You can filter these results by age, gender, and finishing time. You can also change which segment you're comparing against by clicking on the title of the plot.</p>
 <div class="svgholder">
 <svg id="marathon_plot2"></svg>
 </div>
 
-It's fun to see how the faster runners have more even splits but still tend to start out fast and then slow down, just like the midpack runners. Also, look at how well the 21.1-30km pace predicts your overall race pace. So if you're at 30km, maybe the best way to predict your result is to take your pace since the halfway point in min/km, and multiply by 42.2/8.9. At least this gives you some mental math to keep your mind off the pain of the last 12k of the race. <br> <br>
+It's fun to see how the faster runners have more even splits -- but even they still tend to start out fast and then slow down, just like the midpack runners. Also, look at how well the 21.1-30km pace predicts your overall race pace. So next time you're 30km into a marathon, maybe the best way to predict your final time is to multiply your pace from the past 10k (in min/km) by 42.2/10. At least this gives you some mental math to keep your mind off the pain of the last 12k of the race. <br> <br>
 
 A few warnings about this visualization:
 <ul>
 <li> The 40-42.2km segment is much shorter than the other segments. Because of this, for purely statistical reasons we'd expect there to be more variability in runners' paces over 40-42.2km than in the other segments. This is true even if we ignore all the other psychological and physiological reasons that people go abnormally fast or slow at the end of a marathon. So don't overanalyze the 40-42.2km segment. It's just there for fun!</li>
 <li> If you're running a 4:00 min/km pace, then a 20 sec/km deviation from this pace represents a dramatic difference in speed; if you're running a 7:00 min/km pace, then a 20 sec/km deviation doesn't change your speed much. For this reason, the raw pace difference is a flawed measure of how ``even'' splits are. If I spend more time on this visualization, I might include the option to measure the pace deviations as percentages of average pace, rather than absolute pace differences.</li>
-<li> There are problems with the 2012 data -- many runners are recorded as finishing the race before they hit the 40km checkpoint. I think the 40km checkpoint was just buggy that year, so the plot above does not use the 2012 data when plotting any statistic that uses the 35-40km or 40km-42.2km paces.</li>
+<li> There are problems with the 2012 data -- many runners are recorded as finishing the race before they hit the 40km checkpoint. I guess the 40km checkpoint was just buggy that year, so the plot above does not use the 2012 data in its calculation of any statistic that uses the 35-40km or 40km-42.2km paces.</li>
 </ul>
 
 
