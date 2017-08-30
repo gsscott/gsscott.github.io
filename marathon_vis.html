@@ -58,9 +58,9 @@ The plot below shows the finishing times of participants of the Toronto Waterfro
 <svg id="marathon_plot"></svg>
 </div>
 
-You can really see the big bump below the 3:00 mark, the 3:30 mark, and the 4:00 mark. These are goal times for many people, and large groups that are following pacers will appear as bumps here.
+You can really see the big bumps below the common goal times of 3:00, 3:30, and 4:00.<br>
 
-It's interesting to see that the median pace hasn't changed much over the years. I was expecting that as the popularity of the marathon grew, that the overall pace would decrease, but if this trend exists, it isn't very obvious in the data. I ran the 2015 and 2016 marathons, and I was happy to see that everyone else agreed that 2016 was the more difficult year -- in fact, it was the slowest race (by median finish time) of the last fifteen years!
+I ran the 2015 and 2016 marathons, and I was happy to see that the data agrees with my feeling that 2016 was the more difficult year -- in fact, it was the slowest race (by median finish time) of the last fifteen years!
 
 
 <h3 class="subsection"> Splits</h3>
@@ -70,13 +70,14 @@ The plot below compares the pace of the runners during different segments of the
 <svg id="marathon_plot2"></svg>
 </div>
 
-It's fun to watch how the faster runners tend to have much more even splits, but still tend to start out fast and then slow down. I was surprised by how much -- I'm going to have to track down that sub-2:30 runner who did their 35-40km split a minute slower than their race pace, and see what happened!<br>
+It's fun to see how the faster runners have more even splits, but still tend to start out fast and then slow down. I was surprised by how much -- I'm going to have to track down that sub-2:30 runner who did their 35-40km split a minute slower than their race pace, and see what happened!<br>
 
 Also, it's amazing how well the 21.1-30km pace predicts your overall race pace. So if you're at 30km, maybe the best way to predict your result is to . At least, this gives you some mental math to keep your mind off the pain of the last 12k of the race. 
 
 A few warnings about this visualization:
 <ul>
 <li> The distance in the segment 40-42.2km is much shorter than the other distances. Because of this, for purely statistical reasons we'd expect there to be more variability in runners' paces over 40-42.2km than in the other segments -- even ignoring the fact that there are other psychological and physiological reasons people go abnormally fast or slow at the end of a marathon. So don't overanalyze the 40-42.2km segment, it's just there for fun!</li>
+<li> The raw difference in pace is perhaps a bad statistic to measure how ``even'' splits are. If you're running a 4:00 min/km pace, then deviating from this pace by 20 sec/km represents a dramatic difference in speed; if you're running a 7:00 min/km pace, then deviating by 20 sec/km feels the same. If I spend more time on this visualization, I might have the option to measure the pace deviations as percentages of average pace, rather than absolute pace differences.</li>
 <li> There are problems with the 2012 data -- many runners are recorded as finishing the race before they hit the 40km checkpoint. I think this is an issue with the 40km checkpoint, so the plot above does not include the data from 2012 when visualizing any statistic that uses the 35-40km or 40km-42.2km paces.</li>
 </ul>
 
