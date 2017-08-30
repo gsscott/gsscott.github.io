@@ -112,7 +112,7 @@ yAxis: null
 }
 m1Scales.yAxis = d3.axisLeft(m1Scales.y).tickSize(m1Parameters.plotWidth)
 
-d3.csv("http://gsscott.github.io/df1veryslim2002.csv", function(data) {
+d3.csv("https://gsscott.github.io/df1veryslim2002.csv", function(data) {
 	m1Variables.globalData = data;
 	m1Variables.maskedGlobalData = data;
 	console.log("Done loading");
