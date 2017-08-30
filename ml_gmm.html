@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Overpass:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="supplemental.css">
+    <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+    <title>Geoffrey Scott</title>
+</head>
+<body>
+
+<div class="heading">
+<div class="container">
+<h1 class="h1title"> GEOFFREY SCOTT</h1>
+<h4 class="h4title"> Mathematician / Machine Learning Engineer</h4>
+</div>
+</div>
+<div class="container">
+
+    <nav class="navbar navbar-default">
+    
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-nav-demo">
+        <ul class="nav navbar-nav navbar-left">
+            <li><a href="index.html">Home</a> </li>
+            <li><a href="teaching.html">Teaching</a></li>
+            <li><a href="research.html">Math Research</a></li>
+            <li><a href="#">Machine Learning</a></li>
+            <li><a href="cv.html">CV</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Contact</a></li>
+        </ul>
+        </div>
+    
+    </nav>
+<hr class="bottomhr">
+
+
+
+<h1 class="article-header">k-means and gaussian mixture models</h1>
+
+<p> The \(k\)-means algorithm is an process for finding grouping data points into \(k\) "clusters" of points. The most popular algorithm is summarized below</p>
+
+<div class="highlight">
+    <pre>
+ <code><span style="color:black"><b>INPUT:</b></span> N data points \(x^{(1)}, \dots, x^{(N)}\) in \(\mathbb{R}^n\)
+	k initial points \(m_1, \dots, m_k\) in \(\mathbb{R}^n\)
+
+<b>OUTPUT:</b> A partition \(\{C_1, \dots, C_k\}\) of the data points
+
+  <b>CODE:</b> do  {
+	    For each \(i\), set \(C_i\) equal to the set of all data points that are closer to \(m_i\) than any other \(m_j\)
+	    For each \(i\) such that \(C_i \neq \emptyset\), set \(m_i\) equal to the centroid of the points in \(C_i\)
+	    } while (at least one of \(m_1, \dots, m_k\) is different from its value in the previous iteration)
+    </code></pre>
+</div>
+
+				You can click on the two diagrams below to see the algorithm work for \(k=2\) and \(k=3\).
+
+				<video width="480" height="320" onclick="this.play()">
+<source src="k_means_2means.mp4" type="video/mp4">
+</video>
+				<video width="480" height="320" onclick="this.play()">
+<source src="k_means_3means.mp4" type="video/mp4">
+</video>
+
+There are excellent online resources to help you understand the motivation behind clustering problems, the basics of this algorithm, why it's guaranteed to terminate, why it's <em>not</em> guaranteed to find the optimal solution, and how to pick a good value of \(k\). My goal is not to repeat these resources, but to talk about a few topics that confused me about the algorithm when I first saw it.
+
+<ul>
+<li>How to approach this problem from the perspective of loss functions and gradient descent</li>
+<li>How to initialize the values of \(m_1, \dots, m_k\) effectively</li>
+<li>How to upgrade the algorithm to estimate the "shape" of the clusters</li>
+</ul>
+
+Each of these topics is self-contained, so click on whichever one interests you.
+
+
+<h2>Loss Functions</h2>
+
+<p>The input to the k-means algorithm is a data set \(X\) and a positive integer \(k\), and the goal is to find a partition \(\{C_1, C_2, \dots, C_k\}\) of \(X\) that minimizes the function </p>
+
+
+where \(\mu_i\) denotes the centroid of the data. To intuit the expression above, notice that for each set \(C_i\) in the partition, the expression \( \) measures the variance of the data in that partition. Therefore, the optimal partition will be one where each \(C_i\) are clustered together data points.
+
+
+The domain of the loss function is discrete, so unlike many problems in machine learning, we could minimize this loss function by iterating over all possible partitions of \(X\) and calculating the loss for each one. Of course, this is wildly impractical for large data sets, so in practice it's more common to use the following iterative algorithm which is fast but not guaranteed to find the optimal solution.
+
+                
+
+The algorithm is guaranteed to terminate, since the total sum of the distances from the points of \(X\) to their assigned centroid is guaranteed to descrease at every step; see BLAH BLAH BLAH for an introductory treatment of this algorithm.
+
+There are two unsatisfying parts of this discussion that I want to address. The first is the question of how to choose good initial values for the means. Notice how much quicker the algorithm converges depending on which one you pick
+
+<h2>Initial values of \(m_1, \dots, m_k\)</h2>
+<p>Part of the input to the \(k\)-means algorithm is a choice of initial value for \(m_1, \dots, m_k\). Although it's possible to run the solution with any choice of initialization, a careful choice can increase the chance that the algorithm will converge to a good one. I'll describe a few ways to initialize these values, in order of most naive to least.</p>
+
+
+<p>The most naive thing to do is to choose random values for \(m_1, \dots, m_k\). This is rarely done in practice, because if one of the \(m_i^{\textrm{s}}\) is dramatically farther from the data than the others, then it's likely that the corresponding \(C_i\) will equal the empty set for the duration of the algorithm. This is suboptimal (assuming there are at least \(k\) data points), so we'd prefer to have a way to initialize \(m_1, \dots, m_k\) so that the first  Therefore, it's prudent to choose an initialization for \(m_1, \dots, m_k\) for which each </p>
+
+One obvious way of achieving this goal is to pick \(k\) random distinct data points, and initialize \(m_1, \dots, m_k\) to be those points. 
+
+
+
+
+<h2>Gaussian Mixture Model</h2>
+There are two ways to think about the output of the \(k\)-means algorithm. If our goal to group our data into clusters (e.g. grouping medical patients by their disease), then perhaps the partition \(C_1, \dots, C_k\) produced by the algorithm are satisfactory.
+
+If one cluster has low variance, and another cluster has high variance, then ``distance to the mean'' is a bad way to decide which cluster a data point belongs to.
+
+Some clusters are asymmetric, and 
+
+
+we're interested in grouping like data points together, The output of the k-means algorithm is just a list of means. When we have a cluster of points, we can learn more about the data if we know the means and the covariance matrix. These can be calculated using 
+
+My goal in this post is twofold: to describe the initialization techniques for this problem, and also to describe a more advanced version of this algorithm, called 
+                
+
+
+
+When you hear people talking about the \(k\)-means algorithm, you'll hear them saying things like "the algorithm isn't guaranteed to find the global minimum of the loss function -- you might converge to a local minimum instead." This kind of sentence confused me at first, because the loss function I wrote above has, as its domain, a discrete set: the set of all possible partitions of the data set into \(k\) subsets. As such, the domain doesn't have a topology, so the phrase ``local minima'' isn't defined. I assumed that people were just lazily conflating the term "local minimum" with "something that a loss-function reducing algorithm might converge to" (because, for gradient descent algorithms, these concepts are indeed the same).
+
+However, there is a way to describe these points as local minima by considering a slightly different loss function which takes, as its domain, the set of all possible \(k\)-tuples of points in \(\mathbb{R}^n\), and has, as its output, the sum of squared distances from each datapoint to its nearest \(m\).
+
+
+
+The domain of this function is a metric space, so it makes sense to talk about "local" minima of this function, and it's easy to prove that
+
+Let \(\{C_1, \dots, C_k\}\) is a fixed point under the \(k\)-means algorithm for which each \(C_i\) is nonempty. Then the centroids \(\{m_1, \dots, m_k\}\) of the sets \(C_1, \dots, C_k\) form a local minima of the function above
+
+If \(c_1, \dots, c_k\) is a local minimum of the function above, then the corresponding sets \(C_i\) are a fixed point under the usual \(k\)-means algorithm. 
+
+
+This actually gives us an alternate way to 
+
+</div>
+
+</body>
+
+
+</html>

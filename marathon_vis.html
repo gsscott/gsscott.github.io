@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Overpass:400,700" rel="stylesheet">
+	<meta charset=UTF-8 />
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="supplemental.css">
-	<title>Geoffrey Scott</title>
+	<link rel="stylesheet" type="text/css" href="marathon.css">	
+	<title>Marathon Visualization</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
 </head>
 <body>
 
@@ -31,10 +32,10 @@
 		</div>
 		<div class="collapse navbar-collapse" id="bs-nav-demo">
 		<ul class="nav navbar-nav navbar-left">
-			<li><a href="#" class="navbarbutton">Home</a> </li>
+			<li><a href="index.html">Home</a> </li>
 			<li><a href="teaching.html">Teaching</a></li>
 			<li><a href="research.html">Math Research</a></li>
-			<li><a href="machinelearning.html">Machine Learning</a></li>
+			<li><a href="#">Machine Learning</a></li>
 			<li><a href="cv.html">CV</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
@@ -46,21 +47,24 @@
 <hr class="bottomhr">
 
 
-<p>I am a postdoctoral fellow at the University of Toronto. If you're a current student of mine, you're probably looking for my academic webpage <a href="http://www.math.toronto.edu/gscott/teaching.html">here</a>.</p>
-
-<p>In the summer of 2017, I decided to teach myself machine learning and data science. This website keeps track of my progress, and also makes available to the public all the teaching materials I've written for my courses.</p>
-
-<p>I'm hoping to find a challenging job in industry after my postdoctoral fellowship, so if you're looking for a machine learning engineer, data scientist, or mathematician, send me a message!</p>
-
-
-
-
+The plot below shows the finishing times of participants of the Toronto Waterfront Marathon from 2002 to 2016. You can filter the results by age, year, and gender.
+<br>
+<br>
+<div class="svgholder">
+<svg id="marathon_plot"></svg>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+The plot below compares the pace of the runners during different segments of the race, compared to their average pace over the entire race. For example, the violin plot labelled '0-10km' measures the (pace for first 10k, (sec/km)) minus (entire race pace (sec/km)). The big bump at about -5 means that a lot of people ran their first 10k at a pace that was about 5 seconds/km faster than their overall race pace. You can filter these results by age, gender, and finishing time. You can also change which segment you're comparing against by clicking on the title of the plot.
+<div class="svgholder">
+<svg id="marathon_plot2"></svg>
+</div>
+
+
+
+
+<script type="text/javascript" src="marathon.js"></script>
+
+
+<script type="text/javascript" src="marathon2.js"></script>
 </body>
 </html>
-
-
-

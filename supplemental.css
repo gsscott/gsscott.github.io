@@ -15,8 +15,30 @@ body {
 	color:gray;
 }
 
+.svgholder {
+	width:850px;
+	margin:10px auto;
+}
+
 hr {
 	margin:0px;
+}
+
+.project_thumbnail{
+	margin:25px 25px 25px 25px;
+
+}
+
+.thumbnail_alt {
+	margin-right: calc(50% - 80px);
+	margin-left: calc(50% - 80px);
+  display: block;
+  padding: 4px;
+  margin-bottom: 20px;
+  line-height: 1.42857143;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background:#E6E6E6;
 }
 
 
@@ -32,6 +54,14 @@ hr {
 	margin-right:0;
 }
 
+.article-header{
+	border-bottom:1px solid black;
+	width:80%;
+	color:#17b59a;
+	text-align:center;
+	margin:auto auto;
+}
+
 
 #differentfont {
 
@@ -45,6 +75,14 @@ hr {
 	color:#17b59a;
 	text-transform:underline;
 	text-transform:uppercase;
+}
+
+.project_title {
+	color:#17b59a;
+	text-transform:uppercase;
+	text-align: center;
+	margin: 4px auto;
+	font-weight: bold;
 }
 
 .bottomhr {

@@ -1,0 +1,158 @@
+ #marathon_plot,
+ #marathon_plot2 {
+ 	font-family: 'Roboto', sans-serif;
+ 	margin: auto;
+ }
+
+
+.plotTitle {
+	font-weight: bolder;
+	font-size: 18px;
+}
+
+.line {
+  fill: none;
+  stroke: lightseagreen;
+  stroke-width: 2px;
+}
+
+.bottomLine {
+	stroke: #000;
+	stroke-width: 1px;
+}
+
+.majorTimeTick {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+.medianText {
+	stroke: #000;
+	stroke-width: 2px;
+}
+
+
+
+.yTick {
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.minorTimeTick {
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.track,
+.track-inset,
+.track-overlay,
+.trackborder {
+  stroke-linecap: round;
+}
+
+.triangles {
+  stroke: lightseagreen;
+  stroke-width: 0px;
+  fill: lightseagreen;
+}
+
+
+.medianLine {
+  stroke: red;
+  stroke-opacity: 1;
+  stroke-width: 1px;
+}
+
+.track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 7px;
+}
+
+.m1selectedAgeTrack {
+  stroke: lightseagreen;
+  stroke-opacity: 1;
+  stroke-width: 7px;
+}
+
+.selectedAgeTrack {
+  stroke: lightseagreen;
+  stroke-opacity: 1;
+  stroke-width: 7px;
+}
+
+.selectedTimeTrack {
+  stroke: lightseagreen;
+  stroke-opacity: 1;
+  stroke-width: 7px;
+}
+
+.trackborder {
+  stroke: #c5c5c5;
+  stroke-opacity: 0.3;
+  stroke-width: 20px;
+}
+
+.violin{
+  shape-rendering: geometricPrecision;
+  fill: none !important;
+  stroke: #777;
+  stroke-width: 1px;
+}
+
+.track-inset {
+  stroke: #ddd;
+  stroke-width: 5px;
+}
+
+.track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  stroke: transparent;
+  cursor: crosshair;
+}
+
+
+
+.axis path {
+   stroke: white;
+}
+
+#m1yearHandle {
+	fill: lightseagreen;
+}
+
+#yearHandle {
+	fill: lightseagreen;
+}
+
+.zoomButtonText,
+.sexButtonText {
+   font-family: FontAwesome;
+   color: white;
+}
+
+
+.bar rect {
+  fill: lightseagreen;
+  stroke: lightseagreen;
+  opacity: 0.8;
+}
+
+
+.backgroundBar rect {
+  fill: #f5b4af;
+  stroke: #f5b4af;
+  opacity: 0.5;
+}
+
+.foregroundBar rect {
+  fill:  #1acbae;
+  stroke: #1acbae;
+  opacity: 0.5;
+}
+
+.bar text {
+  fill: #fff;
+  font: 10px sans-serif;
+}
