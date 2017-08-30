@@ -6,6 +6,34 @@ body {
 	background:#E6E6E6;
 }
 
+.emailBox{
+	background: #E6E6E6;
+	width: 60%;
+	margin: auto;
+	margin-bottom: 50px;
+  	border: 1px solid #ddd;
+  	border-radius: 4px;	
+  	padding: 20px;
+}
+
+.emailBox input[type=text], input[type=email], textarea{
+	width: 100%;
+	padding: 6px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing:border-box;
+	margin-bottom:16px;
+	resize:vertical;
+}
+
+.emailBox input[type=submit] {
+	background-color: #1acbae;
+	border: none;
+	border-radius: 4px;
+	width: 50%;
+	font-weight: 700;
+}
+
 .h1title{
 	margin-top:10px;
 	color:#1acbae;
