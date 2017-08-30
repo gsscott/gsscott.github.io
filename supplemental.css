@@ -43,6 +43,11 @@ body {
 	color:gray;
 }
 
+.imgAttr {
+	font-size: 8px;
+	color: black;
+	text-align: center;
+}
 .svgholder {
 	width:850px;
 	margin:10px auto;
@@ -62,7 +67,7 @@ hr {
 	margin-left: calc(50% - 80px);
   display: block;
   padding: 4px;
-  margin-bottom: 20px;
+  margin-top: 20px;
   line-height: 1.42857143;
   border: 1px solid #ddd;
   border-radius: 4px;
