@@ -118,7 +118,7 @@ var xAgeSliderInv = d3.scaleLinear().range([ages[0], ages[ages.length - 1]]).dom
 var yAxis = d3.axisLeft(y).tickSize(plotWidth);
 
 
-d3.csv("http://localhost:8888/df2veryslim2002.csv", function(data) {
+d3.csv("http://gsscott.github.io/df2veryslim2002.csv", function(data) {
 	globalData = data;
 	maskGlobalData();
 	//maskedGlobalData = data;
