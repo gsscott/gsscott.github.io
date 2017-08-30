@@ -299,7 +299,7 @@ function plotViolin(){
 
 	var yHistMax = 0;
 	for (var segmentNum = 0; segmentNum < segmentNames.length; segmentNum += 1){
-		if ((segmentNum != subtractedSegmentIndex) && (shortSegmentNames[segmentNum] == '40-42.2km pace')){
+		if ((segmentNum != subtractedSegmentIndex) && ((shortSegmentNames[segmentNum] == '40-42.2km pace')||(shortSegmentNames[segmentNum] == '30-40km pace')||(shortSegmentNames[subtractedSegmentIndex] == '40-42.2km pace')||(shortSegmentNames[subtractedSegmentIndex] == '30-40km pace'))){
 			currentBins[segmentNum] =d3.histogram().domain(xHist.domain()).thresholds(xHist.ticks(numTicks))(maskedGlobalDataNo2012.map(function (d){return parseInt(d[segmentNames[segmentNum]] - d[segmentNames[subtractedSegmentIndex]])}));
 			yHistMax = Math.max(yHistMax, d3.max(currentBins[segmentNum], function(d) {return d.length;}));
 		} else if (segmentNum != subtractedSegmentIndex) {
