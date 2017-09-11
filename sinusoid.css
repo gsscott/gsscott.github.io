@@ -1,0 +1,29 @@
+
+.track,
+.track-inset,
+.track-overlay {
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+.track-inset {
+  stroke: #ddd;
+  stroke-width: 5px;
+}
+
+.track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  stroke: transparent;
+  cursor: crosshair;
+}
+
+
+.axis path {
+   stroke: white;
+}
