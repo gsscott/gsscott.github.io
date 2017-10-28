@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=UTF-8 />
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="supplemental.css">
+	<link rel="stylesheet" type="text/css" href="marathon.css">	
+	<title>Marathon Visualization</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-39278612-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+
+<div class="heading">
+<div class="container">
+<h1 class="h1title"> GEOFFREY SCOTT</h1>
+<h4 class="h4title"> Mathematician / Machine Learning Engineer</h4>
+</div>
+</div>
+<div class="container">
+
+	<nav class="navbar navbar-default">
+	
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-nav-demo" aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-nav-demo">
+		<ul class="nav navbar-nav navbar-left">
+			<li><a href="index.html">Home</a> </li>
+			<li><a href="teaching.html">Teaching</a></li>
+			<li><a href="research.html">Math Research</a></li>
+			<li><a href="machinelearning.html">Machine Learning</a></li>
+			<li><a href="cv.html">CV</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="contact.html"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Contact</a></li>
+		</ul>
+		</div>
+	
+	</nav>
+<hr class="bottomhr">
+
+<!--<div class="wb-prettify lang-python" width=100> -->
+<!--</div>-->
+
+This page describes the <a href = "https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count"> NOAA Fisheries Steller Sea Lion Count</a> Kaggle competition. Some of the images below are from the competition data set. According to my interpretation of the competition rules, I may use these pictures in this educational blog under fair use; if I'm wrong about this, please <a href="contact.html">let me know</a>!
+
+<h3 class="subsection"> Background</h3>
+
+How many sea lions do you see sunbathing on the rock in the picture?
+
+<!--<div class="imageholder">-->
+<img src="sl_ex1.jpg" width="50%" class="imagecenter">
+<!--</div>-->
+
+Three hundred? Four hundred? What if I zoom in to a tiny region surrounding that puddle in the middle.
+
+<img src="sl_zoom_ex1.jpg" width="50%" class="imagecenter">
+
+That's a lot of sea lions! Each one is marked with a coloured dot: the adult males are marked red, and the adult females in brown. If you squint really hard, you'll also see lots of sea lion pups marked with green dots. And if you zoomed into other parts of the picture, you'd see sea lions marked with magenta dots (subadult males) and blue dots (juveniles) too. All together, there are 946 sea lions in the picture! This is way more than I guessed at first glance -- it's hard to count sea lions quickly and accurately by eye. Fortunately, the hard workers at NOAA spent days labelling thousands of pictures like this, which we can use to train an algorithm to count sea lions. To test our algorithm, we're also given thousands of unlabelled pictures. The goal of the Kaggle competition is to count how many of each type of sea lion is in each unlabelled picture. The most accurate predictions (using RMSE) is the winner.</p>
+
+<!--62	12	486	42	344-->
+
+<!--
+We are also given thousands of unlabelled pictures, with the task of counting how many of each type of sea lion from each picture.-->
+
+
+<h3 class="subsection"> Choosing an algorithm</h3>
+
+<p>Today, almost all state-of-the-art image processing algorithms use CNNs -- convolutional neural networks. Unfortunately, CNNs can take weeks to train even using a powerful computing cluster. If you don't have the computing resources and patience to train a CNN from scratch, an alternative is to use a technique called <i>transfer learning</i>. In this context, the phrase <i>transfer learning</i> refers to the process of starting with a neural network that's been pre-trained on some task different from the one you're working on, then replacing the last layer with an untrained layer, then training the resulting network for your own task.
+</p>
+<br> <br>
+INSERT PICTURE HERE
+<br> <br>
+Why does transfer learning work? After all, we wouldn't take a half-trained random forest or SVM model, and continue its training on a new task  -- what makes CNNs different? The answer lies in the organizational structure of a trained CNN. The early layers of a trained CNN detect low-level features (like edges or corners), while the later layers aggregate these low-level features to detect high-level features (like chimneys or airplane wings or sea lion flippers). <a href="https://www.youtube.com/watch?v=aircAruvnKk">This</a> youtube video explains why and how this self-organization happens. Because the low-level feature detectors are roughly the same regardless of task (detecting the edge of a chimmney works the same way as detecting the edge of an airplane wing) we can save training time by initializing the early-layer weights in our network to ones that have already been trained to be good low-level feature detectors.
+<br><br>
+<p>
+For this project, I re-trained the VGG16 network. Davi Frossard at University of Toronto has a well-written tensorflow implementation of VGG16 on <a href="https://www.cs.toronto.edu/~frossard/post/vgg16/">his website</a>, as well as a file containing pre-trained weights. There are two significant changes we need to make to Davi's VGG16 implementation to make it work with our problem: preparing the inputs and changing the output layer. Since we're talking about transfer learning, let's see how we'll modify the neural net output first.
+
+<h3 class="subsection"> Changing the output layer</h3>
+
+The last few lines of Davi's implementation of VGG16 look roughly like the code below -- I've edited parts of the code fragment that aren't relevant to our high-level discussion (things like name_scope statements and datatype specifications). The abbreviations <i>fc2</i> and <i>fc3</i> stand for fully connected layers 2 and 3, respectively. 
+
+<div class="codebox">
+<pre class="prettyprint">
+fc2_weights = tf.Variable(tf.truncated_normal([4096, 4096], stddev=0.1))
+fc2_biases = tf.Variable(tf.constant(1.0, shape=[4096]))
+fc2_logits = tf.nn.bias_add(tf.matmul(fc1_out, fc2_weights), fc2_biases)
+fc2_out = tf.nn.relu(fc2_logits)
+
+fc3_weights = tf.Variable(tf.truncated_normal([4096, 1000], stddev=0.1))
+fc3_biases = tf.Variable(tf.constant(1.0, shape=[1000]))
+fc3_logits = tf.nn.bias_add(tf.matmul(fc2_out, fc3_weights), fc3_biases)
+</pre></div>
+
+The fc3_logits variable are the output logits for the neural net. When the neural net was trained, it was trained for an image classification task of 1000 different classes -- the softmax of the fc3_logits layer is the probability distribution of an input image being in each class. For our purpose, we want to output a ordinal regression task on five classes. 
+
+<h3 class="subsection"> Preparing the inputs</h3>
+
+First, the VGG16 network is designed to input size 224x224. The sea lion pictures are 5616x3744. I thought it would be a bad idea to simply rescale the pictures, because such a dramatic size reduction would inevitably cause some of the details of the picture to be lost. Even at full resolution, it's hard to tell the sea lion pups apart from grey rocks. If I reduced the resolution, I worried that it would be impossible. Therefore, I decided to go with a sliding window approach instead. This means that every time we want to process a picture, we  
+
+
+
+
+
+Also, Kaggle user LivingProgram made available a csv file containing the coordinates of each of the coloured dots in the training files <a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count/discussion/32857">here</a>; using this will save us from writing our own code to do this. Thanks Davi and LivingProgram!</p>
+
+
+
+
+
+
+<h3 class="subsection"> Challenges</h3>
+
+When I tested the neural network on the training set, there was one big problem: although many predictions were very reasonable, there were a few pictures which were <i>way</i> off. I made a list of these difficult images, and watched my sliding window algorithm process these images. To my surprise, it seemed like it was working appropriately. So I went back to the dotted training data to see if anything was fishy. Sure enough, there seemed to be a <i>lot</i> of unmarked sea lions in these difficult training images. For example, here's a portion of one of the pictures. Notice how none of the dark blobs (which sure look like sea lion pups!) are counted by the NOAA scientists!
+
+<img src="sl_zoom_seal.jpg" width="50%" class="imagecenter">
+
+I went to the competition 
+
+
+</body>
+</html>

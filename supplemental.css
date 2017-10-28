@@ -53,6 +53,17 @@ body {
 	width:850px;
 	margin:10px auto;
 }
+.imageholder {
+	margin:10px auto;
+}
+.imagecenter {
+	display:block;
+	margin:10px auto;
+}
+.codebox {
+	width:600px;
+	margin:10px auto;
+}
 
 hr {
 	margin:0px;
