@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="supplemental.css">
 	<link rel="stylesheet" type="text/css" href="marathon.css">	
-	<title>Marathon Visualization</title>
+	<title>Counting Sea Lions</title>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
 	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
 <script>
@@ -60,7 +60,7 @@
 <!--<div class="wb-prettify lang-python" width=100> -->
 <!--</div>-->
 
-This page describes the <a href = "https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count"> NOAA Fisheries Steller Sea Lion Count</a> Kaggle competition. Some of the images below are from the competition data set. According to my interpretation of the competition rules, I may use these pictures in this educational blog under fair use; if I'm wrong about this, please <a href="contact.html">let me know</a>!
+This page describes the <a href = "https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count"> NOAA Fisheries Steller Sea Lion Count</a> Kaggle competition. Some of the images below are from the competition data set. As I understand the competition rules, I may use pictures from the competition dataset in this educational blog under fair use; if I'm wrong about this, please <a href="contact.html">let me know</a>!
 
 <h3 class="subsection"> Background</h3>
 
@@ -142,17 +142,25 @@ When I tested the neural network on the training set, some of my predictions wer
 
 I went to the Kaggle forum and saw that other competition participants identified the problem: these dark blobs are seals, not sea lions. I needed a way to make sure my algorithm doesn't misidentify seals as sea lions. The typical solution to this problem would be to include into my training set a lot of pictures of seals and a lot of pictures of sea lions, so that my neural net would learn the subtle difference between them. This would take a lot of time and computing power, so I looked to simpler solutions first.
 
-In all of the pictures with seals, my neural net was overestimating the number of sea lion pups -- after all, the seals were being misclassified as pups. One remarkable property of the dataset that I learned when I was exploring the data is that in any given picture, the sea lions pups (almost) never outnumber the adult females.
+In all of the pictures with seals, my neural net was overestimating the number of sea lion pups. After all, the seals were being misclassified as pups. The key to fixing this issue is something I noticed when I was exploring the data: in any given picture, the sea lions pups (almost) never outnumber the adult females. Each dot in the scatterplot below represents one of the training data pictures.
 
-<img src="adult_female_vs_pups.png" width="50%" class="imagecenter">
+<img src="adult_females_vs_pups.png" width="50%" class="imagecenter">
 
-One of the remarkable property of the pictures with seals is that my algorithm predicted a lot of pups in the picture. After all, the seals were being misclassified as pups. 
+From a biological perspective, it makes sense that a sea lion pup would hang around his mother, and this is reflected in the data. This also means that if an algorithm predicts that a picture has way more sea lion pups than adult females, it's probably misclassifying seals as sea lion pups. So here's a two-line 
+
+<div class="codebox">
+<pre class="prettyprint">
+if (predictions['pups'] > predictions['adult_females']):
+	predictions['pups'] = predictions['adult_females']
+</pre></div>
+
+It's not an elegant solution, but it's a quick and dirty fix that dramatically improved the performance of the algorithm.
 
 <h3 class="subsection"> Code</h3>
-You can see the complete code here: . Of course, the code won't work without the database of sea lion pictures (available on the <a href = "https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count">Kaggle competition website</a>) and the weights for the VGG16 network (available on <a href="https://www.cs.toronto.edu/~frossard/post/vgg16/">Davi Frossard's website</a>)
+You can see the complete code here: (to be uploaded). Of course, the code won't work without the database of sea lion pictures (available on the <a href = "https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count">Kaggle competition website</a>) and the weights for the VGG16 network (available on <a href="https://www.cs.toronto.edu/~frossard/post/vgg16/">Davi Frossard's website</a>)
 
 
 <h3 class="subsection"> Thanks</h3>
-Kaggle user LivingProgram made available a csv file containing the coordinates of each of the coloured dots in the training files <a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count/discussion/32857">here</a>; this saved me from writing my own code to do this. Also thanks to Davi Frossard for making his VGG16 implementation available online.</p>
+Kaggle user LivingProgram made available a csv file containing the coordinates of each of the coloured dots in the training files <a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count/discussion/32857">here</a>; this saved me from writing my own code to do this. Also thanks to Davi Frossard for making his VGG16 implementation available online. Also thanks to my competition teammates Benson Joeris and Victor Veitch. Although we each came up with our separate algorithms and separate code to solve the problem, we had productive conversations together.</p>
 </body>
 </html>
