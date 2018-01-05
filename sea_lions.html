@@ -86,11 +86,9 @@ We are also given thousands of unlabelled pictures, with the task of counting ho
 
 <p>Today, almost all state-of-the-art image processing algorithms use CNNs -- convolutional neural networks. Unfortunately, CNNs can take weeks to train even using a powerful computing cluster. If you don't have the computing resources and patience to train a CNN from scratch, an alternative is to use a technique called <i>transfer learning</i>. In this context, the phrase <i>transfer learning</i> refers to the process of starting with a neural network that's been pre-trained on some task different from the one you're working on, then replacing the last layer with an untrained layer, then training the resulting network for your own task.
 </p>
-<br> <br>
-INSERT PICTURE HERE
-<br> <br>
+<p>
 Why does transfer learning work? After all, we wouldn't take a half-trained random forest or SVM model, and continue its training on a new task  -- what makes CNNs different? The answer lies in the organizational structure of a trained CNN. The early layers of a trained CNN detect low-level features (like edges or corners), while the later layers aggregate these low-level features to detect high-level features (like chimneys or airplane wings or sea lion flippers). <a href="https://www.youtube.com/watch?v=aircAruvnKk">This</a> youtube video explains why and how this self-organization happens. Because the low-level feature detectors are roughly the same regardless of task (detecting the edge of a chimmney works the same way as detecting the edge of an airplane wing) we can save training time by initializing the early-layer weights in our network to ones that have already been trained to be good low-level feature detectors.
-<br><br>
+</p>
 <p>
 For this project, I re-trained the VGG16 network. Davi Frossard at University of Toronto has a well-written tensorflow implementation of VGG16 on <a href="https://www.cs.toronto.edu/~frossard/post/vgg16/">his website</a>, as well as a file containing pre-trained weights. There are two significant changes we need to make to Davi's VGG16 implementation to make it work with our problem: preparing the inputs and changing the output layer. Since we're talking about transfer learning, let's see how we'll modify the neural net output first.
 
@@ -110,17 +108,26 @@ fc3_biases = tf.Variable(tf.constant(1.0, shape=[1000]))
 fc3_logits = tf.nn.bias_add(tf.matmul(fc2_out, fc3_weights), fc3_biases)
 </pre></div>
 
-The fc3_logits variable are the output logits for the neural net. When the neural net was trained, it was trained for an image classification task of 1000 different classes -- the softmax of the fc3_logits layer is the probability distribution of an input image being in each class. For our purpose, we want to output a ordinal regression task on five classes. 
+The fc3_logits variable are the output logits for the neural net. When the neural net was trained, it was trained for an image classification task of 1000 different classes -- the softmax of the fc3_logits layer is the probability distribution of an input image being in each class. For our purpose, we want to output a regression task on five classes. The simplest way to achieve this would be by changing the 1000's to 5's in the code above
+
+<div class="codebox">
+<pre class="prettyprint">
+fc2_weights = tf.Variable(tf.truncated_normal([4096, 4096], stddev=0.1))
+fc2_biases = tf.Variable(tf.constant(1.0, shape=[4096]))
+fc2_logits = tf.nn.bias_add(tf.matmul(fc1_out, fc2_weights), fc2_biases)
+fc2_out = tf.nn.relu(fc2_logits)
+
+fc3_weights = tf.Variable(tf.truncated_normal([4096, 5], stddev=0.1))
+fc3_biases = tf.Variable(tf.constant(1.0, shape=[5]))
+fc3_out = tf.nn.bias_add(tf.matmul(fc2_out, fc3_weights), fc3_biases)
+</pre></div>
+
+and to apply a softplus to the components of the fc3_out to get the predictions for the number of sea lions in each class. A slightly more sophisticated output layer follows the suggestion given in <a href="http://calla.rnet.missouri.edu/cheng_courses/rank.pdf">this paper</a> for ordinal regression. To explain their idea, imagine that we want to count just the number of adult males in a picture (ignore the other classes of sea lions for now). In the above code, the number of adult males is encoded as the softplus of a single output neuron. If we know that there will be fewer than 30 adult males in any image, another way we could encode the number of adult males is using a 30-bit string of 1's and 0's, where the nth output is 0 if fewer than n adult males appear in the image, and 1 otherwise. For example, the presence of three adult males is encoded as (1, 1, 1, 0, 0, 0, ... 0).
 
 <h3 class="subsection"> Preparing the inputs</h3>
 
-First, the VGG16 network is designed to input size 224x224. The sea lion pictures are 5616x3744. I thought it would be a bad idea to simply rescale the pictures, because such a dramatic size reduction would inevitably cause some of the details of the picture to be lost. Even at full resolution, it's hard to tell the sea lion pups apart from grey rocks. If I reduced the resolution, I worried that it would be impossible. Therefore, I decided to go with a sliding window approach instead. This means that every time we want to process a picture, we  
+The VGG16 network is designed to input pictures of size 224x224. The sea lion pictures are 5616x3744. I tried rescaling the sea lion pictures to be 224x224, but such a dramatic size reduction made it impossible to tell the sea lion pups apart from grey rocks. Instead of rescaling the sea lion pictures, I decided to use a sliding window approach. This means that every time we want to process a picture, we start inputting the top 224x224 pixel subimage into the neural net. After counting the sea lions in that single subimage, we process the next 224x224 pixel subimage. The result of this process looks like the following:
 
-
-
-
-
-Also, Kaggle user LivingProgram made available a csv file containing the coordinates of each of the coloured dots in the training files <a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count/discussion/32857">here</a>; using this will save us from writing our own code to do this. Thanks Davi and LivingProgram!</p>
 
 
 
@@ -129,12 +136,23 @@ Also, Kaggle user LivingProgram made available a csv file containing the coordin
 
 <h3 class="subsection"> Challenges</h3>
 
-When I tested the neural network on the training set, there was one big problem: although many predictions were very reasonable, there were a few pictures which were <i>way</i> off. I made a list of these difficult images, and watched my sliding window algorithm process these images. To my surprise, it seemed like it was working appropriately. So I went back to the dotted training data to see if anything was fishy. Sure enough, there seemed to be a <i>lot</i> of unmarked sea lions in these difficult training images. For example, here's a portion of one of the pictures. Notice how none of the dark blobs (which sure look like sea lion pups!) are counted by the NOAA scientists!
+When I tested the neural network on the training set, some of my predictions were <i>way</i> different from the truth. I made a list of the problematic images, and watched my sliding window algorithm process them. To my surprise, it seemed like it was working appropriately. So I went back to the dotted training data to see if anything was fishy. Sure enough, there seemed to be a <i>lot</i> of unmarked sea lions in these difficult training images. For example, here's a portion of one of the pictures. Notice how none of the dark blobs (which sure look like sea lion pups!) are counted by the NOAA scientists.
 
 <img src="sl_zoom_seal.jpg" width="50%" class="imagecenter">
 
-I went to the competition 
+I went to the Kaggle forum and saw that other competition participants identified the problem: these dark blobs are seals, not sea lions. I needed a way to make sure my algorithm doesn't misidentify seals as sea lions. The typical solution to this problem would be to include into my training set a lot of pictures of seals and a lot of pictures of sea lions, so that my neural net would learn the subtle difference between them. This would take a lot of time and computing power, so I looked to simpler solutions first.
+
+In all of the pictures with seals, my neural net was overestimating the number of sea lion pups -- after all, the seals were being misclassified as pups. One remarkable property of the dataset that I learned when I was exploring the data is that in any given picture, the sea lions pups (almost) never outnumber the adult females.
+
+<img src="adult_female_vs_pups.png" width="50%" class="imagecenter">
+
+One of the remarkable property of the pictures with seals is that my algorithm predicted a lot of pups in the picture. After all, the seals were being misclassified as pups. 
+
+<h3 class="subsection"> Code</h3>
+You can see the complete code here: . Of course, the code won't work without the database of sea lion pictures (available on the <a href = "https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count">Kaggle competition website</a>) and the weights for the VGG16 network (available on <a href="https://www.cs.toronto.edu/~frossard/post/vgg16/">Davi Frossard's website</a>)
 
 
+<h3 class="subsection"> Thanks</h3>
+Kaggle user LivingProgram made available a csv file containing the coordinates of each of the coloured dots in the training files <a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count/discussion/32857">here</a>; this saved me from writing my own code to do this. Also thanks to Davi Frossard for making his VGG16 implementation available online.</p>
 </body>
 </html>
