@@ -126,7 +126,7 @@ and to apply a softplus to the components of the fc3_out to get the predictions 
 
 <h3 class="subsection"> Preparing the inputs</h3>
 
-The VGG16 network is designed to input pictures of size 224x224. The sea lion pictures are 5616x3744. I tried rescaling the sea lion pictures to be 224x224, but such a dramatic size reduction made it impossible to tell the sea lion pups apart from grey rocks. Instead of rescaling the sea lion pictures, I decided to use a sliding window approach. This means that every time we want to process a picture, we start inputting the top 224x224 pixel subimage into the neural net. After counting the sea lions in that single subimage, we process the next 224x224 pixel subimage. The result of this process looks like the following:
+The VGG16 network is designed to input pictures of size 224x224. The sea lion pictures are 5616x3744. I tried rescaling the sea lion pictures to be 224x224, but such a dramatic size reduction made it impossible to tell the sea lion pups apart from grey rocks. Instead of rescaling the sea lion pictures, I decided to use a sliding window approach. This means that every time we want to process a picture, we start inputting the top 224x224 pixel subimage into the neural net. After counting the sea lions in that single subimage, we process the next 224x224 pixel subimage. 
 
 
 
