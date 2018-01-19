@@ -122,11 +122,11 @@ fc3_biases = tf.Variable(tf.constant(1.0, shape=[5]))
 fc3_out = tf.nn.bias_add(tf.matmul(fc2_out, fc3_weights), fc3_biases)
 </pre></div>
 
-and to apply a softplus to the components of the fc3_out to get the predictions for the number of sea lions in each class. A slightly more sophisticated output layer follows the suggestion given in <a href="http://calla.rnet.missouri.edu/cheng_courses/rank.pdf">this paper</a> for ordinal regression. To explain their idea, imagine that we want to count just the number of adult males in a picture (ignore the other classes of sea lions for now). In the above code, the number of adult males is encoded as the softplus of a single output neuron. If we know that there will be fewer than 30 adult males in any image, another way we could encode the number of adult males is using a 30-bit string of 1's and 0's, where the nth output is 0 if fewer than n adult males appear in the image, and 1 otherwise. For example, the presence of three adult males is encoded as (1, 1, 1, 0, 0, 0, ... 0).
+and to apply a softplus to the components of the fc3_out to get the predictions for the number of sea lions in each class. A slightly more sophisticated output layer follows the suggestion given in <a href="http://calla.rnet.missouri.edu/cheng_courses/rank.pdf">this paper</a> for ordinal regression. To explain their idea, imagine that we want to count just the number of adult males in a picture (ignore the other classes of sea lions for now). In the above code, the number of adult males is encoded as the softplus of a single output neuron. If we know that there will be fewer than 30 adult males in any image, another way we could encode the number of adult males is using a 30-bit string of 1's and 0's, where the nth output is 0 if fewer than n adult males appear in the image, and 1 otherwise. For example, the presence of three adult males is encoded as (1, 1, 1, 0, 0, 0, ... 0). This is the technique I applied in my neural net -- it seemed to do just a little bit better than the softplus technique.
 
 <h3 class="subsection"> Preparing the inputs</h3>
 
-The VGG16 network is designed to input pictures of size 224x224. The sea lion pictures are 5616x3744. I tried rescaling the sea lion pictures to be 224x224, but such a dramatic size reduction made it impossible to tell the sea lion pups apart from grey rocks. Instead of rescaling the sea lion pictures, I decided to use a sliding window approach. This means that every time we want to process a picture, we start inputting the top 224x224 pixel subimage into the neural net. After counting the sea lions in that single subimage, we process the next 224x224 pixel subimage. 
+The VGG16 network is designed to input pictures of size 224x224. The sea lion pictures are 5616x3744. I tried rescaling the sea lion pictures to be 224x224, but such a dramatic size reduction made it impossible to tell the sea lion pups apart from grey rocks. Instead of rescaling the sea lion pictures, I decided to use a sliding window approach. This means that every time we want to process a picture, we start inputting the top 224x224 pixel subimage into the neural net. After counting the sea lions in that single subimage, we process the next 224x224 pixel subimage. The final prediction for the entire image is the sum of the predictions of each of the subimages.
 
 
 
@@ -146,7 +146,7 @@ In all of the pictures with seals, my neural net was overestimating the number o
 
 <img src="adult_females_vs_pups.png" width="50%" class="imagecenter">
 
-From a biological perspective, it makes sense that a sea lion pup would hang around his mother, and this is reflected in the data. This also means that if an algorithm predicts that a picture has way more sea lion pups than adult females, it's probably misclassifying seals as sea lion pups. So here's a two-line 
+From a biological perspective, it makes sense that a sea lion pup would hang around his mother, and this is reflected in the data. This also means that if an algorithm predicts that a picture has way more sea lion pups than adult females, it's probably misclassifying seals as sea lion pups. So here's a two-line fix to the problem:
 
 <div class="codebox">
 <pre class="prettyprint">
