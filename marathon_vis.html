@@ -83,6 +83,24 @@ The big bump around -8 means that many people ran their first 10k roughly 8 seco
 
 It's fun to see how the faster runners have more even splits -- but even they still tend to start out fast and then slow down, just like the midpack runners. Also, look at how well the 21.1-30km pace predicts your overall race pace. So next time you're 30km into a marathon, maybe the best way to predict your final time is to multiply your pace from the past 10k (in min/km) by 42.2/10. At least this gives you some mental math to keep your mind off the pain of the last 12k of the race. <br> <br>
 
+Usually, amateur runners like me are told to have as even splits as possible. Since fast runners have pretty even splits, this seems like reasonable advice. However, maybe a better strategy is to try and pace yourself using the same pacing strategy that the pros use -- almost even, but a bit slower towards the end of the race as towards the beginning. For example, suppose your goal is to run a 4-hour marathon, but you want to pace yourself so that your <i>proportion</i> of the time spent in each segment of the race is the same as the proportion of time that a super-fast person (sub 2:50) spends on each segment. The calculator below tells you what splits to follow if you want to pace yourself ``like the subelites'' in this way.
+
+<center>
+<div class="divcalculator">
+	<input id="timeInput" type="time">  <button type="button" class="btn btn-primary" id="calculatorButton">CALCULATE</button><br>
+	 <div class="calculatorentry" id="div5k"> 5k: <br> 0 </div>
+	 <div class="calculatorentry" id="div10k"> 10k: <br> 0 </div>
+	 <div class="calculatorentry" id="div15k"> 15k: <br> 0 </div>
+	 <div class="calculatorentry" id="div20k"> 20k: <br> 0 </div>
+	 <div class="calculatorentry" id="div211k"> 21.1k: <br> 0 </div>
+	 <div class="calculatorentry" id="div25k"> 25k: <br> 0 </div>
+	 <div class="calculatorentry" id="div30k"> 30k: <br> 0 </div>
+	 <div class="calculatorentry" id="div35k"> 35k: <br> 0 </div>
+	 <div class="calculatorentry" id="div40k"> 40k: <br> 0 </div>
+
+</div>
+</center>
+
 A few warnings about this visualization:
 <ul>
 <li> The 40-42.2km segment is much shorter than the other segments. Because of this, for purely statistical reasons we'd expect there to be more variability in runners' paces over 40-42.2km than in the other segments. This is true even if we ignore all the other psychological and physiological reasons that people go abnormally fast or slow at the end of a marathon. So don't overanalyze the 40-42.2km segment. It's just there for fun!</li>
@@ -92,10 +110,10 @@ A few warnings about this visualization:
 
 
 
-
 <script type="text/javascript" src="marathon.js"></script>
 
 
 <script type="text/javascript" src="marathon2.js"></script>
+<script type="text/javascript" src="marathon_calculator.js"></script>
 </body>
 </html>
